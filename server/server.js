@@ -30,6 +30,11 @@ app.get('/fillexp', (req,res) => {
     }
     res.send(response);
 })
+app.delete('/deleteHistory', (req,res) => {
+    res.send('history of expressions was deleted');
+    storedExp = [];
+    console.log('storedExp:',storedExp,'history cleared');
+})
 
 function expressionParse(exp){
     console.log(exp);
@@ -67,7 +72,7 @@ function expressionParse(exp){
     console.log('this is the total after evaluation:', total);
     let result = total.toString();
     let resultExpression = resultExp(expressions)
-    let resultButton = `<button id="${result}"onclick="runExp(this)">${resultExpression} = ${result}</button><br>`
+    let resultButton = `<button id="${resultExpression}"onclick="runExp(this.id)">${resultExpression} = ${result}</button><br>`
     storedExp.push(resultButton);
     return resultButton
 }

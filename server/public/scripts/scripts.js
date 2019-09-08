@@ -47,6 +47,7 @@ function readyNow(){
         addValue('/');
     });
     $('#evalBtn').on('click', evaluate);
+    $('#deleteHistory').on('click',deleteAll);
     resultOfExpressions();
 }
 function addValue(value){
@@ -87,5 +88,19 @@ function resultOfExpressions(){
     })
 }
 function runExp(which){
-
+    $('#calcIn').val('');
+    $('#calcIn').val(which);
+    evaluate();
+}
+function deleteAll(){
+    if(confirm('Are you sure you want to delete Calculator History?')){
+        $.ajax({
+            type: 'DELETE',
+            url: "/deleteHistory",
+            success: function(result){
+                $('#results').empty();
+                console.log(result);
+            }
+        })
+    }
 }
