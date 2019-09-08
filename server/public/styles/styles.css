@@ -1,0 +1,12 @@
+body{
+    margin:auto;
+    max-width: 760px;
+}
+header{
+    background-color:lightcoral;
+}
+h1{
+    margin:auto;
+    text-align:center;
+    color:darkred;
+}
