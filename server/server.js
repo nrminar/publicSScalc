@@ -84,7 +84,7 @@ function hasLetters(string){
     let letters = false;
     for(let i=0; i<string.length;  i++){
         console.log('checkin letters on:', string);
-        if((64<string[i].charCodeAt(0) && string[i].charCodeAt(0)<91) || (96<string[i].charCodeAt(0) && string[i].charCodeAt(0)<123)){
+        if(string == '' || (64<string[i].charCodeAt(0) && string[i].charCodeAt(0)<91) || (96<string[i].charCodeAt(0) && string[i].charCodeAt(0)<123)){
             console.log(string[i].charCodeAt(0));
             letters = true;
         }
