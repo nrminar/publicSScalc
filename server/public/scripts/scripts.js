@@ -89,7 +89,7 @@ function resultOfExpressions(){
     })
 }
 function runExp(which){
-    $('#calcIn').val(which.id);
+    $('#calcIn').val(which);
     evaluate();
 }
 function deleteAll(){

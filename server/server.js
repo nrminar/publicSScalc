@@ -72,7 +72,7 @@ function expressionParse(exp){
     }
     console.log('this is the total after evaluation:', total);
     let result = total.toString();
-    let resultExpression = resultExp(expressions)
+    let resultExpression = resultExp(expressions);
     let resultButton = `<button id="${resultExpression}"onclick="runExp(this.id)">${resultExpression} = ${result}</button><br>`
     storedExp.push(resultButton);
     return resultButton
