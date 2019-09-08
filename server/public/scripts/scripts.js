@@ -69,7 +69,7 @@ function evaluate(){
         url: "/expression"
     }).then(function(response){
         console.log(response);
-        if(response[0] === '<'){
+        if(response[0] === '<' || response[0] === '`'){
             $('#results').append(response)
         }else{
             alert(response);
