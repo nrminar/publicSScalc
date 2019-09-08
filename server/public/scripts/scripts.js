@@ -79,6 +79,7 @@ function evaluate(){
     $('#calcIn').val('');
 }
 function resultOfExpressions(){
+    $('#calcIn').val('');
     $.ajax({
         type: 'GET',
         url: "/fillexp"
