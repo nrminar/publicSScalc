@@ -89,7 +89,6 @@ function resultOfExpressions(){
     })
 }
 function runExp(which){
-    $('#calcIn').val('');
     $('#calcIn').val(which);
     evaluate();
 }
