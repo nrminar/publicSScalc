@@ -55,7 +55,7 @@ function addValue(value){
     $('#calcIn').val($('#calcIn').val() + value)
 }
 function evaluate(){
-    $('#calcIn').val('');
+    let expression = $('#calcIn').val();
     $.ajax({
         type: "POST",
         url: "/expression",
@@ -68,9 +68,14 @@ function evaluate(){
         url: "/expression"
     }).then(function(response){
         console.log(response);
-        $('#results').append(response)
+        if(response[0] === '<'){
+            $('#results').append(response)
+        }else{
+            alert(response);
+        }
         expression = [];
     })
+    $('#calcIn').val('');
 }
 function resultOfExpressions(){
     $.ajax({
@@ -82,5 +87,5 @@ function resultOfExpressions(){
     })
 }
 function runExp(which){
-    
+
 }

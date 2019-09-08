@@ -35,6 +35,9 @@ function expressionParse(exp){
     console.log(exp);
     let total = 0;
     let char = '';
+    if(!numberChecker(exp[0]) || hasLetters(exp)){
+        return `Enter a valid expression please`;
+    }
     for(let i=0; i<exp.length; i++){
         console.log('In parseLoop', i, total);
         let h = i-1;
@@ -64,12 +67,24 @@ function expressionParse(exp){
     console.log('this is the total after evaluation:', total);
     let result = total.toString();
     let resultExpression = resultExp(expressions)
-    let resultButton = `<button id="${result}"onclick="runExp(this)">${resultExpression} = ${result}</button>`
+    let resultButton = `<button id="${result}"onclick="runExp(this)">${resultExpression} = ${result}</button><br>`
     storedExp.push(resultButton);
     return resultButton
 }
 function numberChecker(num){
     return !isNaN(num);
+}
+function hasLetters(string){
+    let letters = false;
+    for(let i=0; i<string.length;  i++){
+        console.log('checkin letters on:', string);
+        if(64<string[i].charCodeAt(0) && string[i].charCodeAt(0)<91 || 96<string[i].charCodeAt(0) && string[i].charCodeAt(0)<123){
+            console.log(string[i].charCodeAt(0));
+            letters = true;
+        }
+    }
+    console.log('does it have letter?:', letters);
+    return letters;
 }
 function resultExp(){
     let expression = '';
