@@ -35,6 +35,9 @@ app.delete('/deleteHistory', (req,res) => {
     storedExp = [];
     console.log('storedExp:',storedExp,'history cleared');
 })
+process.on('uncaughtException', function (err) {
+    console.log(err);
+})
 
 function expressionParse(exp){
     console.log(exp);
