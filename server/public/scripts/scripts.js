@@ -44,11 +44,16 @@ function readyNow(){
         addValue('*');
     });
     $('#divideBtn').on('click', function(){
-        addValue('/');
+        addValue('\/');
     });
+    $('#clearBtn').on('click', clearIn);
     $('#evalBtn').on('click', evaluate);
     $('#deleteHistory').on('click',deleteAll);
     resultOfExpressions();
+}
+function clearIn(){
+    $('#calcIn').val('');
+    expression = [];
 }
 function addValue(value){
     expression .push(value);
@@ -70,7 +75,7 @@ function evaluate(){
     }).then(function(response){
         console.log(response);
         if(response[0] === '<' || response[0] === '`'){
-            $('#results').append(response)
+            $('#results').prepend(response)
         }else{
             alert(response);
         }

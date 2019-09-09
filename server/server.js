@@ -39,51 +39,141 @@ app.delete('/deleteHistory', (req,res) => {
 
 function expressionParse(exp){
     console.log(exp);
-    let total = 0;
-    let char = '';
     if(!numberChecker(exp[0]) || hasLetters(exp)){
         return `Enter a valid expression please`;
     }
-    for(let i=0; i<exp.length; i++){
-        console.log('In parseLoop', i, total);
-        let h = i-1;
-        console.log('h',h);
-        let num = parseFloat(exp[i]);
-        let numType = numberChecker(num);
-        console.log('num',num,'numtype', numType);
-        if(i === 0 && numType){
-            console.log('in first index');
-            total = num;
-        }else if(numType && isNaN(exp[h]) && i != 0){
-            console.log('in operators');
-            char = exp[h];
-            if(char === '*'){
-                total *= num;
-            }else if(char === '/'){
-                total /= num;
-            }else if(char === '+'){
-                total += num;
-            }else if(char === '-'){
-                total -= num;
-            }
-        }else if(isNaN(exp[i])){
-            console.log('continue');
-        }
-    }
-    console.log('this is the total after evaluation:', total);
-    let result = total.toString();
+    let result = evaluator(exp);
+    console.log('this is the total after evaluation:', result[0]);
     let resultExpression = resultExp(expressions);
-    let resultButton = `<button id="${resultExpression}"onclick="runExp(this.id)">${resultExpression} = ${result}</button><br>`
+    let resultButton = `<div class="output" style="border: 2px solid black;"><p class="result">${result[0]}</p><button id="${resultExpression}" onclick="runExp(this.id)">${resultExpression}</button></div><br>`
     storedExp.push(resultButton);
     return resultButton
 }
 function numberChecker(num){
     return !isNaN(num);
 }
+function evaluator(exp){
+    for(let i=0; i<exp.length; i++){
+        if(exp[i] === '*' || exp[i] === '\/'){
+            if(exp[i] === '*'){
+                return multiplyIn(exp,i);
+            }else if(exp[i] === '\/'){
+                return divideIn(exp,i);
+            }
+        }
+    }
+    for(let i=0; i<exp.length; i++){
+        if(exp[i] === '+' || exp[i] === '-'){
+            if(exp[i] === '+'){
+                return addIn(exp,i);
+            }else if(exp[i] === '\/'){
+                return minusIn(exp,i);
+            }
+        }
+    }
+    
+}
+function multiplyIn(expMult,index){
+    console.log('in multIn');
+    let n = index;
+    let tempExp = [];
+    for(let i=0; i<expMult.length; i++){
+        tempExp.push(expMult[i]);
+    }
+    console.log('exp to be eval:', tempExp);
+    let h = n-1;
+    let j = n+1;
+    let tempNum = parseFloat(tempExp[h]) * parseFloat(tempExp[j]);
+    tempExp.splice(h,3,tempNum);
+    console.log('exp after:', tempExp);
+    for(let z=0; z<tempExp.length; z++){
+        h = z-1;
+        j = z+1;
+        if(tempExp[z] === '\/'){
+            tempExp = divideIn(tempExp,z);
+        }else if(tempExp[z] === '+'){
+            tempExp = addIn(tempExp,z);
+        }else if(tempExp[z] === '-'){
+            tempExp = minusIn(tempExp,z);
+        }
+    }
+    console.log(tempExp,'after multiplyIn');
+    return tempExp;
+}
+function divideIn(expDiv,index){
+    console.log('in divIn');
+    let n = index;
+    let tempExp = [];
+    for(let i=0; i<expDiv.length; i++){
+        tempExp.push(expDiv[i]);
+    }
+    console.log('exp to be eval:', tempExp);
+    let h = n-1;
+    let j = n+1;
+    let tempNum = parseFloat(tempExp[h]) / parseFloat(tempExp[j]);
+    tempExp.splice(h,3,tempNum);
+    for(let x=0; x<tempExp.length; x++){
+        h = x-1;
+        j = x+1;
+        if(tempExp[x] === '*'){
+            tempExp = multiplyIn(tempExp,x);
+        }else if(tempExp[x] === '+'){
+            tempExp = addIn(tempExp,x);
+        }else if(tempExp[x] === '-'){
+            tempExp = minusIn(tempExp,x);
+        }
+    }
+    console.log(tempExp,'after divIn');
+    return tempExp;
+}
+function addIn(expAdd,index){
+    console.log('in addIn');
+    let n = index;
+    let tempExp = [];
+    for(let i=0; i<expAdd.length; i++){
+        tempExp.push(expAdd[i]);
+    }
+    console.log('exp to be eval:', tempExp);
+    let h = n-1;
+    let j = n+1;
+    tempNum = parseFloat(tempExp[h]) + parseFloat(tempExp[j]);
+    tempExp.splice(h,3,tempNum);
+    for(let y=0; y<tempExp.length; y++){
+        h = y-1;
+        j = y+1;
+        if(tempExp[y] === '-'){
+            tempExp = minusIn(tempExp,y);
+        }
+    }
+    console.log(tempExp,'after addIn');
+    return tempExp;
+}
+function minusIn(expMin,index){
+    console.log('in minusIn');
+    let n = index;
+    let tempExp = [];
+    for(let i=0; i<expMin.length; i++){
+        tempExp.push(expMin[i]);
+    }
+    console.log('exp to be eval:', tempExp);
+    let h = n-1;
+    let j = n+1;
+    tempNum = parseFloat(tempExp[h]) - parseFloat(tempExp[j]);
+    tempExp.splice(h,3,tempNum);
+    for(let y=0; y<tempExp.length; y++){
+        h = y-1;
+        j = y+1;
+        if(tempExp[y] === '+'){
+            tempExp = addIn(tempExp,y);
+        }
+    }
+    console.log(tempExp,'after minusIn');
+    return tempExp;
+}
 function hasLetters(string){
     let letters = false;
     for(let i=0; i<string.length;  i++){
-        console.log('checkin letters on:', string);
+        console.log('checking letters on:', string[i]);
         if(string == '' || (64<string[i].charCodeAt(0) && string[i].charCodeAt(0)<91) || (96<string[i].charCodeAt(0) && string[i].charCodeAt(0)<123)){
             console.log(string[i].charCodeAt(0));
             letters = true;
@@ -106,7 +196,7 @@ function arrayMaker(array){
         let num = parseFloat(array[i]);
         console.log('this is the number', num);
         console.log('this is the array at i', array[i]);
-        if((num != NaN || array[i] === '.')&& array[i] != '*' && array[i] != '/' && array[i] != '+' && array[i] != '-'){
+        if((num != NaN || array[i] === '.')&& array[i] != '*' && array[i] != '\/' && array[i] != '+' && array[i] != '-'){
             numString += array[i];
             console.log('this is the numString:', numString);
         }else if(isNaN(array[i]) && i !=0){
